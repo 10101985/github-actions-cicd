@@ -1,0 +1,41 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validar:
+    name: Validar código
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Verificar archivos HTML
+        run: |
+          echo "Verificando archivos HTML..."
+          if [ -f index.html ]; then
+            echo "✅ index.html encontrado"
+          else
+            echo "❌ index.html no encontrado"
+            exit 1
+          fi
+
+      - name: Verificar estructura del proyecto
+        run: |
+          echo "Archivos en el repositorio:"
+          ls -la
+          echo "✅ Estructura verificada"
+
+      - name: Reporte final
+        run: |
+          echo "================================"
+          echo "  CI Pipeline completado"
+          echo "  Rama: ${{ github.ref_name }}"
+          echo "  Commit: ${{ github.sha }}"
+          echo "  Autor: ${{ github.actor }}"
+          echo "================================"
